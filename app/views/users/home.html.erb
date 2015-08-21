@@ -1,0 +1,143 @@
+<div id="sign_in_div">
+  <%= link_to 'Login with Persona',"#", id: "sign-in" %>
+</div>
+
+<script>
+//  var signinLink = document.getElementById('signin');
+//
+//  if (signinLink) {
+//    $('#sign_out_div').hide();
+//    signinLink.onclick = function() { navigator.id.request(); };
+//  }
+//
+//  var signoutLink = document.getElementById('signout');
+//  if (signoutLink) {
+//    signoutLink.onclick = function() { navigator.id.logout(); };
+//  }
+//  navigator.id.watch({
+//    loggedInUser: 'nishantupadhyay26@gmail.com',
+//    onlogin: function(assertion) {
+//      $('#sign_in_div').hide();
+//      $('#sign_out_div').show();
+//      $("#sign_out_div").append('<div>Welcome User, Thanks for using Persona.</div>');
+//      $.ajax({
+//        url: "/",
+//        method:'GET',
+//        dataType: 'json'
+//      }).done(function() {
+//        $( this ).addClass( "done" );
+//      });
+//      // A user has logged in! Here you need to:
+//      // 1. Send the assertion to your backend for verification and to create a session.
+//      // 2. Update your UI.
+//    },
+//    onlogout: function() {
+//      $('#sign_in_div').show();
+//      $("#sign_in_div").append('<div>You are signed out successfully.</div>');
+//      $('#sign_out_div').hide();
+//      // A user has logged out! Here you need to:
+//      // Tear down the user's session by redirecting the user or making a call to your backend.
+//    }
+//  });
+//var currentUser = 'nishantupadhyay26@gmail.com';
+//
+//var signin = document.getElementById('sign-in');
+//var signout = document.getElementById('sign-out');
+//
+//signin.addEventListener("click", function() {
+//  navigator.id.request();
+//}, false);
+//
+//signout.addEventListener("click", function() {
+//  navigator.id.logout();
+//}, false);
+//
+//function handleUserResponse(xhr) {
+//  return function() {
+//    if (xhr.status == 200) {
+//      if (xhr.responseText == "no user") {
+//        logoutUser();
+//      }
+//      else {
+//        loginUser(xhr.responseText);
+//      }
+//      navigator.id.watch({
+//        loggedInUser: currentUser,
+//        onlogin: function(assertion) {
+//          verifyAssertion(assertion);
+//        },
+//        onlogout: function() {
+//          logoutUser();
+//        }
+//      });
+//    }
+//    else {
+//      navigator.id.logout();
+//      alert("XMLHttpRequest error: " + xhr.status);
+//    }
+//  }
+//}
+//
+//function checkCurrentUser() {
+//  var xhr = new XMLHttpRequest();
+//  xhr.open("GET", "/", true);
+//  xhr.send();
+//  xhr.onload = handleUserResponse(xhr);
+//}
+//
+//checkCurrentUser();
+//
+//function loginUser(loggedInUser) {
+//  alert('You are successfully logged in');
+//  $('#sign_in_div').hide();
+//  $('#sign_out_div').show();
+//  // update your UI to show that the user is logged in
+//}
+//
+//function logoutUser() {
+//  alert('You are successfully logged out');
+//  $('#sign_out_div').hide();
+//  $('#sign_in_div').show();
+//  // update your UI to show that the user is logged out
+//}
+//
+//function handleVerificationResponse(xhr) {
+//  alert('You are verified successfully!!');
+//    $.ajax({
+//      url: "/",
+//      method:'GET',
+//      dataType: 'json'
+//    })
+//  }
+//
+//
+//
+//function verifyAssertion(assertion) {
+//  var xhr = new XMLHttpRequest();
+//  xhr.open("GET", "/users/home", true);
+//  var param = "assertion="+assertion;
+//  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//  xhr.setRequestHeader("Content-length", param.length);
+//  xhr.setRequestHeader("Connection", "close");
+//  xhr.send(param);
+//  xhr.onload = handleVerificationResponse(xhr);
+//}
+$("#sign-in").click(function(e) {
+  navigator.id.get(function(assertion) {
+    if (assertion) {
+      $.ajax({
+        url: '/users/sign_in',
+        type: "POST",
+        dataType: "html",
+        cache: false,
+        data: {
+          "assertion": assertion
+        },
+        success: function(data, status) {
+          window.location.href = '/';
+        }
+      });
+    }
+  });
+});
+</script>

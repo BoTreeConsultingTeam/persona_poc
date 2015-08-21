@@ -1,0 +1,25 @@
+<div id="test">
+  <% if current_user %>
+    <%= current_user.email %>
+  <% end %>
+</div>
+<div id="sign_out_div">
+  <%= link_to "Logout",'#', id: "sign-out"  %>
+</div>
+
+<script>
+
+  $("#sign-out").bind('click', logout);
+  function logout(event) {
+
+    event.preventDefault();
+    $.ajax({
+      type: 'DELETE',
+      url: '/users/sign_out',
+      success: function() {
+        window.location.href = '/users/home'
+        navigator.id.logout();
+      }
+    });
+  }
+</script>
